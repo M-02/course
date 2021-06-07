@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Kodinger">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>登录</title>
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+    <link rel="stylesheet" type="text/css" href="/course/assets/css/my-login.css">
+    <link rel="stylesheet" type="text/css" href="/course/assets/css/bootstrap.min.css">
+
+</head>
+
+<body class="my-login-page" onload="getCookie()">
+<form name="bb" onsubmit="login()" action="/course/login" method="post">
+    </div>
+    <section class="h-100">
+        <div class="container h-100">
+            <div class="row justify-content-md-center h-100">
+                <div class="card-wrapper">
+                    <div class="brand">
+                        <img src="/course/assets/images/logo.jpg" alt="logo">
+                    </div>
+                    <div class="card fat">
+                        <div class="card-body" >
+
+                            <h4 class="card-title text-center">登录</h4>
+                            <div class="text-center text-danger"><h7 th:text="${message}"></h7></div>
+                            <form method="POST" class="my-login-validation" novalidate="" >
+                                <div class="form-group" >
+                                    <label for="uname">用户名</label>
+                                    <input id="uname" type="uname" class="form-control" name="uname" value="" required autofocus>
+                                    <div class="invalid-feedback">
+                                        电子邮件地址无效
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="upassword">密码
+                                        <a href="forgot.html" class="float-right">
+                                            忘记密码？
+                                        </a>
+                                    </label>
+                                    <input id="upassword" type="password" class="form-control" name="upassword" required data-eye>
+                                    <div class="invalid-feedback">
+                                        请输入密码
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="custom-checkbox custom-control">
+                                        <input type="checkbox" name="rememenber" id="rememenber" class="custom-control-input">
+                                        <label for="rememenber" class="custom-control-label">记住我</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-0">
+                                    <button type="submit" class="btn btn-primary btn-block" onclick="tologin()">
+                                        登录
+                                    </button>
+                                </div>
+                                <div class="mt-4 text-center">
+                                    没有账号? <a href="register.html">点击注册</a>
+                                </div>
+
+
+                                <!--                                <div class="mt-4 text-center">-->
+                                <!--                                    修改密码? <a href="resetpasswd.html">点击修改</a>-->
+                                <!--                                </div>-->
+
+                                <div class="mt-4 text-center">
+                                    <a href="index.html">返回首页</a>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        Copyright &copy; 2019 &mdash; HAIRUI H
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+<script type="text/javascript">
+    //把信息设置进去Cookie里面去
+    function setCookie(){
+        var uname = $('#uname').val();
+        var upassword = $('#upassword').val();
+        var aa = $("input[type='checkbox']").is(":checked");//获取是否选中
+        if(aa==true){//如果选中-->记住密码登录
+            $.cookie("uname",uname.trim(),7);//有效时间7天，也可以设置为永久，把时间去掉就好
+            $.cookie("upassword",upassword.trim(),7);
+        }else{//如果没选中-->不记住密码登录
+            $.cookie("upassword", "");
+            $.cookie("uname", "");
+            alert("没有记住密码")
+        }
+    }
+
+
+    function getCookie(){ //获取cookie
+        var arr = document.cookie.split('|');//读取cookie中的email值
+        var uname = arr[0]; //获取cookie中的用户名
+        var upassword =arr[1]; //获取cookie中的登陆密码
+        if(upassword){//密码存在的话把“记住用户名和密码”复选框勾选住
+            $("[name='rememenber']").attr("checked","true");
+        }
+        if(uname!=""){//用户名存在的话把用户名填充到用户名文本框
+            $("#uname").val(uname);
+        }else{
+            $("#uname").val("");
+        }
+        if(upassword!=""){//密码存在的话把密码填充到密码文本框
+            $("#upassword").val(upassword);
+        }else{
+            $("#upassword").val("");
+        }
+    }
+
+    //登录
+    function tologin(){
+        var uname = document.getElementById('uname').value;//获取输入的uname值
+        var upassword = document.getElementById('upassword').value;//获取输入的password值
+        document.cookie = uname+"|"+upassword+"|";
+        // document.cookie = upassword;
+    }
+</script>
+<script src="/course/assets/js/jquery.min.js"></script>
+<script src="/course/assets/js/bootstrap.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>-->
+<script src="/course/assets/js/my-login.js"></script>
+</body>
+</html>

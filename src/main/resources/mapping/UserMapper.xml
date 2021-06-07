@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huaxia.course.dao.UserMapper">
+
+	<select id="selectById" resultType="com.huaxia.course.pojo.User">
+		select * from user where uid=#{uid}
+	</select>
+
+	<select id="getUser"  resultType="com.huaxia.course.pojo.User">
+	    select * from user where uname=#{uname} and upassword=#{upassword} and ustatus not like 0
+	</select>
+
+	<select id="getAll" resultType="com.huaxia.course.pojo.User">
+	    select * from user a,role b where a.rid not like 3 and a.ustatus=1 and a.rid=b.rid ORDER BY uid
+	</select>
+
+	<update id="resetpasswd" parameterType="com.huaxia.course.pojo.User">
+	    update user set upassword=#{upassword} where uname=#{uname}
+	</update>
+
+	<select id="userDelete" resultType="com.huaxia.course.pojo.User">
+		update user set ustatus=0 where uid in
+		<foreach collection="list" open="(" close=")" item="item" separator="," index="index">
+			#{item}
+		</foreach>
+	</select>
+
+	<insert id="addOne" parameterType="com.huaxia.course.pojo.User">
+		insert into
+		user(uname,upassword,rid,utel,ustatus)
+		values(#{uname},#{upassword},#{rid},#{utel},1)
+	</insert>
+
+
+	<update id="updateUser" parameterType="com.huaxia.course.pojo.User">
+		update user set
+		uname=#{uname},utel=#{utel},rid=#{rid},upassword=#{upassword}
+		where uid=#{uid}
+	</update>
+
+	<update id="startcourse" parameterType="com.huaxia.course.pojo.User">
+		update user set cstatus=1 where uname=#{uname}
+
+	</update>
+
+	<update id="stopcourse" parameterType="com.huaxia.course.pojo.User">
+		update user set cstatus=0 where uname=#{uname}
+
+	</update>
+
+
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huaxia.course.dao.CourseMapper">
+
+
+	<select id="getAll" resultType="com.huaxia.course.pojo.Course">
+	    select * from course where c_status=1
+	</select>
+
+	<select id="selectCourseById" resultType="com.huaxia.course.pojo.Course">
+		select * from course where c_id=#{c_id}
+	</select>
+
+	<select id="courseDelete" resultType="com.huaxia.course.pojo.Course">
+		update course set c_status=0 where c_id in
+		<foreach collection="list" open="(" close=")" item="item" separator="," index="index">
+			#{item}
+		</foreach>
+	</select>
+
+	<insert id="addOne" parameterType="com.huaxia.course.pojo.Course">
+		insert into
+		course(c_name,c_unit,c_category,c_credit,c_teacher,c_date,c_room,c_capacity,c_allowance,c_status)
+		values(#{c_name},#{c_unit},#{c_category},#{c_credit},#{c_teacher},#{c_date},#{c_room},#{c_capacity},#{c_allowance},1)
+	</insert>
+
+
+	<update id="updateCourse" parameterType="com.huaxia.course.pojo.Course">
+		update course set
+		c_name=#{c_name},c_unit=#{c_unit},c_category=#{c_category},c_credit=#{c_credit},c_teacher=#{c_teacher},c_date=#{c_date},c_room=#{c_room},c_capacity=#{c_capacity},c_allowance=#{c_allowance}
+		where c_id=#{c_id}
+	</update>
+
+	<select id="selectCourseByname" resultType="com.huaxia.course.pojo.Course">
+		select c_id,c_name,c_unit,c_category,c_credit,c_teacher,c_date,c_room,c_capacity,c_allowance,cstatus from user a INNER JOIN course b on a.uname=b.c_teacher where c_status=1 and c_teacher=#{c_teacher} ORDER BY c_id
+	</select>
+
+	<select id="selectCourseBystudent" resultType="com.huaxia.course.pojo.Course">
+		select c_id,c_name,c_unit,c_category,c_credit,c_teacher,c_date,c_room,c_capacity,c_allowance,cstatus from user a,course b where  a.ucourse=b.c_name and a.ustatus=1 and a.uname=#{u_name}
+	</select>
+
+	<update id="courseok" parameterType="com.huaxia.course.pojo.Course">
+		update user set cstatus=1,ucourse=#{ucourse} where uname=#{uname}
+
+	</update>
+
+	<update id="coursenotok" parameterType="com.huaxia.course.pojo.Course">
+		update user set cstatus=0, ucourse=null where uname=#{uname}
+
+	</update>
+
+	<select id="lookAll" resultType="com.huaxia.course.pojo.Course">
+	   select c_id,c_name,c_unit,c_category,c_credit,c_teacher,c_date,c_room,c_capacity,c_allowance,cstatus from user a INNER JOIN course b on a.uname=b.c_teacher where c_status=1  ORDER BY c_id
+	</select>
+
+	<select id="mystudent" resultType="com.huaxia.course.pojo.User">
+	   select uid,uname,utel,ucourse from user  where  rid=1 and ucourse=#{ucourse}
+	</select>
+
+	<update id="coursep" parameterType="com.huaxia.course.pojo.Course">
+		update course set c_allowance=c_allowance+1 where c_name=#{ucourse}
+
+	</update>
+
+	<update id="courser" parameterType="com.huaxia.course.pojo.Course">
+		update course set c_allowance=c_allowance-1 where c_name=#{ucourse}
+
+	</update>
+
+
+
+
+</mapper>

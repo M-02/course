@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>我的信息</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="shortcut icon" href="assets/images/favicon.png" />
+    <script type="text/javascript" src="http://tool.lsgzs.cc/hitokoto/?code=js"></script>
+</head>
+<body onload="load_welcome();load_welcome1()">
+<!-- Begin page -->
+<div class="container-scroller">
+    <div th:replace="importpage/frag::top"></div>
+        <div class="container-fluid page-body-wrapper">
+    <div th:replace="importpage/frag::left"></div>
+            <!-- partial -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="page-header">
+                        <h3 class="page-title">
+              <span class="page-title-icon bg-gradient-primary text-white mr-2">
+                <i class="mdi mdi-home"></i>
+              </span>
+                            个人信息
+                        </h3>
+                        <nav aria-label="breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    <span></span>Overview
+                                    <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 stretch-card grid-margin">
+                            <div class="card bg-gradient-danger card-img-holder text-white">
+                                <div class="card-body">
+                                    <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/>
+                                    <h4 class="font-weight-normal mb-3">你好啊！[(${session.user.uname})]
+                                        <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                                    </h4>
+<!--                                    <h4 class="mb-5">姓名：[(${session.user.uname})]</h4>-->
+                                    <h4 class="mb-5">联系电话：[(${session.user.utel})]</h4>
+<!--                                    <img th:src="@{${session.user.uimg}}" alt="image" height="100" width="100">-->
+                                    <h6 class="card-text" id="date"></h6>
+                                    <h6 class="card-text" id="time"></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 stretch-card grid-margin">
+                            <div class="card bg-gradient-info card-img-holder text-white">
+                                <div class="card-body">
+                                    <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/>
+                                    <h4 class="font-weight-normal mb-3" id="welcome">Weekly Orders
+                                        <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                                    </h4>
+                                    <h2 class="mb-5"></h2>
+                                    <h6 class="card-text"  ></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 stretch-card grid-margin">
+                            <div class="card bg-gradient-success card-img-holder text-white">
+                                <div class="card-body" >
+                                    <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/>
+                                    <h4 class="font-weight-normal mb-3" id="welcome1">HHH
+                                <i class="mdi mdi-diamond mdi-24px float-right"></i>
+                                    </h4>
+                                    <h2 class="mb-5"></h2>
+                                    <h6 class="card-text"></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="clearfix">
+                                        <h4 class="card-title float-left">Visit And Sales Statistics</h4>
+                                        <div id="visit-sale-chart-legend" class="rounded-legend legend-horizontal legend-top-right float-right"></div>
+                                    </div>
+                                    <canvas id="visit-sale-chart" class="mt-4"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Traffic Sources</h4>
+                                    <canvas id="traffic-chart"></canvas>
+                                    <div id="traffic-chart-legend" class="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    <div th:replace="importpage/frag::footer"></div>
+    </div>
+    <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<script src="assets/vendors/js/vendor.bundle.base.js"></script>
+<script src="assets/vendors/js/vendor.bundle.addons.js"></script>
+<script src="assets/js/off-canvas.js"></script>
+<script src="assets/js/misc.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/dashboard.js"></script>
+    <script>
+        Date.prototype.format = function (fmt) {
+            var o = {
+                "y+": this.getFullYear, //年
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds() //秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+        setInterval("document.getElementById('date').innerHTML = (new Date()).format('yyyy/MM/dd');", 1000);
+        setInterval("document.getElementById('time').innerHTML = (new Date()).format('hh:mm:ss');", 1000);
+    </script>
+    <script type="text/javascript">
+        function load_welcome(){
+            var arr = ["世事变幻无常，而近乎永恒不变者，唯你我头上的同一片星空。",
+                "耽误的时间太多，事情可就做不完了",
+                "来去无常，得过且过","今天过的怎么样？",
+                "按照自己的选择来生活，是送给自己最好的礼物。",
+                "恨君不似江楼月，南北东西，南北东西，只有相随无别离。",
+                "只有自己能够挺起胸膛，明白自己到底是怎样的人以后，我，才能够得出答案。",
+                "你要相信，没有到不了的明天。",
+                "不要回答！不要回答！不要回答！"];
+            var sar = Math.floor((Math.random()*arr.length));
+            console.log(arr[sar]);
+            document.getElementById("welcome").innerHTML =arr[sar];
+        }
+    </script>
+    <script type="text/javascript">
+        function load_welcome1(){
+            var arr = ["彼岸花花开彼岸，断肠草草断肝肠。",
+                "懂得认输是非常重要的，不尝到失败的不甘，也就不会明白跌倒后怎么爬起来，更不可能再向前迈进。",
+                "忘了我吧，我都忘了","夏雨微尘轻拂袖，两衫风雪若得闲？",
+                "嘿！活着是件很好的事",
+                "人之所以不幸，就缘于置身这卑劣的人世间，为卑劣所恼，连自己的言行也不得不变的卑劣起来",
+                "我之所以想变强，是为了活得轻松写意。",
+                "所有的梦境都是另一个现实，永远不要忘记。",
+                "浩如星海的人群中，与你相遇真是一件幸运的事情",
+                "我抱着你，就像抱着一枝柔弱的花骨朵，让我深深的感受到你是多么的无助。",
+                "山有峰顶，海有彼岸，漫漫长途，终有回转，余味苦涩，终有回甘。",
+                "我永远在这里，涌着爱面朝沧海"];
+            var sar = Math.floor((Math.random()*arr.length));
+            console.log(arr[sar]);
+            document.getElementById("welcome1").innerHTML =arr[sar];
+        }
+    </script>
+</div>
+</body>
+</html>
